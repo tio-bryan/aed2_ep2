@@ -9,14 +9,12 @@ typedef struct no {
     int num_chaves_inserida;
     int chaves[NUM_CHAVES];
     struct no * filhos[NUM_FILHOS];
-} No;
+} NO;
 
 int main(int argc, char *argv[]) {
     //Cria no vazio
-    struct No * raiz = malloc(sizeof(No));
-    for (int i = 0; i < NUM_CHAVES; ++i) {
-        raiz->chaves = NULL;
-    }
+    // NO raiz = malloc(sizeof(NO));
+    // for (int i = 0; i < NUM_CHAVES; ++i) {raiz->chaves = NULL;
 
     FILE * file = fopen(argv[1], "r");
     char comando[7];
