@@ -46,51 +46,55 @@ int main(int argc, char *argv[]) {
             if (raiz == NULL) raiz = noConstructor();
 
             NO atual = raiz;
-            int inserido = 0;
 
-            while (inserido == 0) {
-                if (atual->num_chaves_inserida < NUM_CHAVES) {
-                    atual->chaves[atual->num_chaves_inserida] = numero;
-                    qsort(atual->chaves, NUM_CHAVES, sizeof(int), compare);
-                    atual->num_chaves_inserida++;
-                    inserido = 1;
+            // Vai até a folha a ser inserida (insercao por baixo)
+            int eh_folha = 1;
+            for (int i = 0; i < NUM_FILHOS; i++) if (atual->filhos[i] != NULL) eh_folha = 0;
 
-                } else { // Overflow... Split
-                    // Montra array de chaves + o overflow para depois dividir em esq, meio, dir
-                    int array_split[NUM_FILHOS];
+            if (eh_folha == 0) {
+                for (int i = 0; i < NUM_CHAVES; i++) {
+                    if (numero < atual->chaves[i])
+                }
+            }
+
+            if (atual->num_chaves_inserida < NUM_CHAVES) {
+                atual->chaves[atual->num_chaves_inserida] = numero;
+                qsort(atual->chaves, NUM_CHAVES, sizeof(int), compare);
+                atual->num_chaves_inserida++;
+
+            } else { // Overflow... Split
+                // Montra array de chaves + o overflow para depois dividir em esq, meio, dir
+                int array_split[NUM_FILHOS];
+                
+                for (int i = 0; i < NUM_CHAVES; i++) {
+                    array_split[i] = atual->chaves[i];
+                }
+
+                array_split[NUM_CHAVES] = numero;
+
+                int esq[NUM_CHAVES];
+                int meio[NUM_CHAVES];
+                int dir[NUM_CHAVES];
+
+                for (int i = 0; i < NUM_CHAVES; ++i) esq[i] = 2147483647;
+                for (int i = 0; i < NUM_CHAVES; ++i) meio[i] = 2147483647;
+                for (int i = 0; i < NUM_CHAVES; ++i) dir[i] = 2147483647;
+                
+                for (int i = 0; i < NUM_CHAVES / 2; ++i) esq[i] = array_split[i];
+                meio[0] = array_split[NUM_CHAVES / 2];
+                for (int i = NUM_CHAVES / 2 + 1; i < NUM_FILHOS; ++i) dir[i - (NUM_CHAVES / 2 + 1)] = array_split[i];
+                
+                if (atual == raiz) {
+                    raiz->filhos[0] = noConstructor();
+                    for (int i = 0; i < NUM_CHAVES; i++) raiz->filhos[0]->chaves[i] = esq[i];
+
+                    for (int i = 0; i < NUM_CHAVES; i++) raiz->chaves[i] = meio[i];
+
+                    raiz->filhos[1] = noConstructor();
+                    for (int i = 0; i < NUM_CHAVES; i++) raiz->filhos[1]->chaves[i] = dir[i];
+
+                } else {
                     
-                    for (int i = 0; i < NUM_CHAVES; i++) {
-                        array_split[i] = atual->chaves[i];
-                    }
-
-                    array_split[NUM_CHAVES] = numero;
-
-                    int esq[NUM_CHAVES];
-                    int meio[NUM_CHAVES];
-                    int dir[NUM_CHAVES];
-
-                    for (int i = 0; i < NUM_CHAVES; ++i) esq[i] = 2147483647;
-                    for (int i = 0; i < NUM_CHAVES; ++i) meio[i] = 2147483647;
-                    for (int i = 0; i < NUM_CHAVES; ++i) dir[i] = 2147483647;
-                    
-                    for (int i = 0; i < NUM_CHAVES / 2; ++i) esq[i] = array_split[i];
-                    meio[0] = array_split[NUM_CHAVES / 2];
-                    for (int i = NUM_CHAVES / 2 + 1; i < NUM_FILHOS; ++i) dir[i - (NUM_CHAVES / 2 + 1)] = array_split[i];
-                    
-                    if (atual == raiz) {
-                        raiz->filhos[0] = noConstructor();
-                        for (int i = 0; i < NUM_CHAVES; i++) raiz->filhos[0]->chaves[i] = esq[i];
-
-                        for (int i = 0; i < NUM_CHAVES; i++) raiz->chaves[i] = meio[i];
-
-                        raiz->filhos[1] = noConstructor();
-                        for (int i = 0; i < NUM_CHAVES; i++) raiz->filhos[1]->chaves[i] = dir[i];
-
-                    } else {
-                        
-                    }
-
-                    inserido = 1;
                 }
             }
             //printf("%i\n", raiz->chaves[0]);
