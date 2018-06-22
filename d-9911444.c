@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 
             if (eh_folha == 0) {
                 for (int i = 0; i < NUM_CHAVES; i++) {
-                    if (numero < atual->chaves[i])
+                    if (numero < atual->chaves[i]);
                 }
             }
 
